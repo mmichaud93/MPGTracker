@@ -122,6 +122,7 @@
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:gravity="end"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <CheckBox
@@ -137,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="All fields are required"
+        android:text="All fields are required and need to be greater than 0"
         android:textColor="#cc2222"
         android:visibility="invisible" />
 

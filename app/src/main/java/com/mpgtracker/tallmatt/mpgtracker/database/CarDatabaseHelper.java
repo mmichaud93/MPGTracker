@@ -7,7 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.mpgtracker.tallmatt.mpgtracker.models.CarModel;
+import com.mpgtracker.tallmatt.mpgtracker.models.Car;
 
 /**
  * Created by TallMatt on 1/24/2017.
@@ -57,7 +57,7 @@ public class CarDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertCar(CarModel car) {
+    public long insertCar(Car car) {
 
         if (car == null) {
             return -1;
@@ -74,7 +74,7 @@ public class CarDatabaseHelper extends SQLiteOpenHelper {
         return i;
     }
 
-    public boolean updateCar(CarModel car) {
+    public boolean updateCar(Car car) {
 
         if (car == null) {
             return false;
@@ -88,7 +88,7 @@ public class CarDatabaseHelper extends SQLiteOpenHelper {
         return r > 0;
     }
 
-    public boolean deleteCar(CarModel car) {
+    public boolean deleteCar(Car car) {
 
         if (car == null) {
             return false;
@@ -111,9 +111,9 @@ public class CarDatabaseHelper extends SQLiteOpenHelper {
         return (int) DatabaseUtils.queryNumEntries(db, CARDB_TABLE_NAME);
     }
 
-    public CarModel[] getAllCars() {
+    public Car[] getAllCars() {
 
-        CarModel[] cars = new CarModel[getNumberOfRows()];
+        Car[] cars = new Car[getNumberOfRows()];
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + CARDB_TABLE_NAME, null);
@@ -121,7 +121,7 @@ public class CarDatabaseHelper extends SQLiteOpenHelper {
 
         int i = 0;
         while (!cursor.isAfterLast()) {
-            cars[i++] = new CarModel(
+            cars[i++] = new Car(
                     cursor.getLong(cursor.getColumnIndex(CARDB_COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(CARDB_COLUMN_MAKE)),
                     cursor.getString(cursor.getColumnIndex(CARDB_COLUMN_MODEL)),
@@ -138,7 +138,7 @@ public class CarDatabaseHelper extends SQLiteOpenHelper {
         return cars;
     }
 
-    private ContentValues getContentValuesFromCarModel(CarModel car) {
+    private ContentValues getContentValuesFromCarModel(Car car) {
         if (car == null) {
             return null;
         }

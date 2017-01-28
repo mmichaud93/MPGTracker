@@ -1,6 +1,5 @@
 package com.mpgtracker.tallmatt.mpgtracker.ui;
 
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +18,15 @@ import com.mpgtracker.tallmatt.mpgtracker.BuildConfig;
 import com.mpgtracker.tallmatt.mpgtracker.R;
 import com.mpgtracker.tallmatt.mpgtracker.database.CarDatabaseHelper;
 import com.mpgtracker.tallmatt.mpgtracker.database.DataPointDatabaseHelper;
-import com.mpgtracker.tallmatt.mpgtracker.models.CarModel;
-import com.mpgtracker.tallmatt.mpgtracker.models.DataPointModel;
+import com.mpgtracker.tallmatt.mpgtracker.models.Car;
+import com.mpgtracker.tallmatt.mpgtracker.models.DataPoint;
 import com.mpgtracker.tallmatt.mpgtracker.ui.chart.XAxisValueFormatter;
 import com.mpgtracker.tallmatt.mpgtracker.ui.dialogfragments.DialogListener;
 import com.mpgtracker.tallmatt.mpgtracker.ui.dialogfragments.NewCarDialogFragment;
 import com.mpgtracker.tallmatt.mpgtracker.ui.dialogfragments.NewDataPointDialogFragment;
+import com.mpgtracker.tallmatt.mpgtracker.utils.DataUtils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,9 +36,10 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    CarModel currentActiveCar;
+    Car currentActiveCar;
     private CarDatabaseHelper carDatabaseHelper;
     private DataPointDatabaseHelper dataPointDatabaseHelper;
+    DecimalFormat decimalFormat = new DecimalFormat("##.###");
 
     @BindView(R.id.main_car_data)
     LinearLayout carDataLayout;
@@ -70,7 +72,16 @@ public class MainActivity extends AppCompatActivity {
         dataPointDatabaseHelper = new DataPointDatabaseHelper(this);
 
         if (BuildConfig.DEBUG) {
-            //carDatabaseHelper.resetTable();
+            carDatabaseHelper.resetTable();
+            dataPointDatabaseHelper.resetTable();
+
+            currentActiveCar = DataUtils.generateRandomCar();
+            carDatabaseHelper.insertCar(currentActiveCar);
+            currentActiveCar.setDataPoints(DataUtils.generateRandomTestData());
+            for (DataPoint dataPoint : currentActiveCar.getDataPoints()) {
+                dataPointDatabaseHelper.insertDataPoint(dataPoint);
+            }
+
         }
 
         if (carDatabaseHelper.getNumberOfRows() == 0) {
@@ -79,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             NewCarDialogFragment newCarDialogFragment = NewCarDialogFragment.newInstance(false, new DialogListener() {
                 @Override
                 public void onDialogClose(Bundle args) {
-                    currentActiveCar = (CarModel) args.getSerializable(NewCarDialogFragment.KEY_NEW_CARMODEL);
+                    currentActiveCar = (Car) args.getSerializable(NewCarDialogFragment.KEY_NEW_CARMODEL);
                     carDatabaseHelper.insertCar(currentActiveCar);
                     initWithLoadedCar();
                 }
@@ -111,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDialogClose(Bundle args) {
 
-                        DataPointModel dataPointModel = (DataPointModel) args.get(NewDataPointDialogFragment.KEY_NEW_DATA_POINT);
+                        DataPoint dataPoint = (DataPoint) args.get(NewDataPointDialogFragment.KEY_NEW_DATA_POINT);
 
-                        currentActiveCar.addDataPoint(dataPointModel);
-                        dataPointDatabaseHelper.insertDataPoint(dataPointModel);
+                        currentActiveCar.addDataPoint(dataPoint);
+                        dataPointDatabaseHelper.insertDataPoint(dataPoint);
 
                         fillOutChart();
                     }
@@ -129,14 +140,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillOutDashboard() {
-
+        mpgOverallText.setText("You average "+decimalFormat.format(DataUtils.getAverageMPG(currentActiveCar.getDataPoints())) + " miles per gallon");
     }
 
     private void fillOutChart() {
 
         List<Entry> entries = new ArrayList<>();
 
-        for (DataPointModel data : currentActiveCar.getDataPoints()) {
+        for (DataPoint data : currentActiveCar.getDataPoints()) {
 
             entries.add(new Entry(data.dateAdded, data.milesTravelled/data.gallonsPutIn));
         }

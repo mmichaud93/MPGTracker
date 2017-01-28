@@ -1,19 +1,12 @@
 package com.mpgtracker.tallmatt.mpgtracker;
 
 import android.os.Bundle;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import com.mpgtracker.tallmatt.mpgtracker.models.CarModel;
-import com.mpgtracker.tallmatt.mpgtracker.models.DataPointModel;
+import com.mpgtracker.tallmatt.mpgtracker.models.Car;
+import com.mpgtracker.tallmatt.mpgtracker.models.DataPoint;
 import com.mpgtracker.tallmatt.mpgtracker.ui.MainActivity;
 import com.mpgtracker.tallmatt.mpgtracker.ui.dialogfragments.DialogListener;
 import com.mpgtracker.tallmatt.mpgtracker.ui.dialogfragments.NewCarDialogFragment;
@@ -23,9 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.*;
@@ -63,15 +54,15 @@ public class DialogFragmentTest {
         NewCarDialogFragment carDialogFragment = NewCarDialogFragment.newInstance(false, new DialogListener() {
             @Override
             public void onDialogClose(Bundle args) {
-                CarModel carModel = (CarModel) args.get(NewCarDialogFragment.KEY_NEW_CARMODEL);
+                Car car = (Car) args.get(NewCarDialogFragment.KEY_NEW_CARMODEL);
 
-                assertTrue(carModel != null);
+                assertTrue(car != null);
 
-                assertEquals(testCarMake, carModel.getMake());
-                assertEquals(testCarModel, carModel.getModel());
-                assertEquals(testCarYear, carModel.getYear());
-                assertEquals(testCarLicense, carModel.getLicense());
-                assertEquals(testCarName, carModel.getName());
+                assertEquals(testCarMake, car.getMake());
+                assertEquals(testCarModel, car.getModel());
+                assertEquals(testCarYear, car.getYear());
+                assertEquals(testCarLicense, car.getLicense());
+                assertEquals(testCarName, car.getName());
             }
         });
         carDialogFragment.show(fm, "dialog_new_car");
@@ -92,14 +83,14 @@ public class DialogFragmentTest {
         NewDataPointDialogFragment dataPointDialogFragment = NewDataPointDialogFragment.newInstance(new DialogListener() {
             @Override
             public void onDialogClose(Bundle args) {
-                DataPointModel dataPointModel = (DataPointModel) args.get(NewDataPointDialogFragment.KEY_NEW_DATA_POINT);
+                DataPoint dataPoint = (DataPoint) args.get(NewDataPointDialogFragment.KEY_NEW_DATA_POINT);
 
-                assertTrue(dataPointModel != null);
+                assertTrue(dataPoint != null);
 
-                assertEquals(testGallons, dataPointModel.gallonsPutIn, 0);
-                assertEquals(testMiles, dataPointModel.milesTravelled, 0);
-                assertEquals(testMoney, dataPointModel.moneySpent, 0);
-                assertEquals(testDate, dataPointModel.dateAdded, 250);
+                assertEquals(testGallons, dataPoint.gallonsPutIn, 0);
+                assertEquals(testMiles, dataPoint.milesTravelled, 0);
+                assertEquals(testMoney, dataPoint.moneySpent, 0);
+                assertEquals(testDate, dataPoint.dateAdded, 250);
             }
         });
         dataPointDialogFragment.show(fm, "dialog_new_data_point");

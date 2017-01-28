@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mpgtracker.tallmatt.mpgtracker.R;
-import com.mpgtracker.tallmatt.mpgtracker.models.CarModel;
+import com.mpgtracker.tallmatt.mpgtracker.models.Car;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,7 +98,7 @@ public class NewCarDialogFragment extends DialogFragment {
 
                 if (dialogListener != null) {
                     Bundle args = new Bundle();
-                    args.putSerializable(KEY_NEW_CARMODEL, new CarModel(-1,
+                    args.putSerializable(KEY_NEW_CARMODEL, new Car(-1,
                             makeEdit.getText().toString(),
                             modelEdit.getText().toString(),
                             yearEdit.getText().toString(),

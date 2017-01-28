@@ -4,9 +4,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.mpgtracker.tallmatt.mpgtracker.database.DataPointDatabaseHelper;
-import com.mpgtracker.tallmatt.mpgtracker.models.DataPointModel;
+import com.mpgtracker.tallmatt.mpgtracker.models.DataPoint;
 import com.mpgtracker.tallmatt.mpgtracker.models.LocationModel;
-import com.mpgtracker.tallmatt.mpgtracker.utils.Utils;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -14,9 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +30,7 @@ public class DataPointDatabaseTest {
     private static float testMoney = 5678.9871f;
     private static long testDate = new Date().getTime();
     private static LocationModel testLocation = new LocationModel(246.80f, 135.79f);
-    private static DataPointModel testDataPoint;
+    private static DataPoint testDataPoint;
 
     private String testUpdate = "_update";
     private float testUpdate_float = 9999.99f;
@@ -44,7 +41,7 @@ public class DataPointDatabaseTest {
     @BeforeClass
     public static void setUp() {
         dataPointDatabaseHelper = new DataPointDatabaseHelper(InstrumentationRegistry.getTargetContext());
-        testDataPoint = new DataPointModel(-1, testCarId, testGallons, testMiles, testMoney, testDate, testLocation);
+        testDataPoint = new DataPoint(-1, testCarId, testGallons, testMiles, testMoney, testDate, testLocation);
     }
 
     @After
@@ -76,7 +73,7 @@ public class DataPointDatabaseTest {
 
         assertTrue(dataPointDatabaseHelper.updateDataPoint(testDataPoint));
 
-        ArrayList<DataPointModel> models = dataPointDatabaseHelper.getAllDataPoints(testDataPoint.carId);
+        ArrayList<DataPoint> models = dataPointDatabaseHelper.getAllDataPoints(testDataPoint.carId);
 
         assertEquals(testCarId + testUpdate_long, models.get(0).carId, 0);
         assertEquals(testGallons + testUpdate_float, models.get(0).gallonsPutIn, 0);
@@ -91,7 +88,7 @@ public class DataPointDatabaseTest {
 
         dataPointDatabaseHelper.insertDataPoint(testDataPoint);
 
-        ArrayList<DataPointModel> models = dataPointDatabaseHelper.getAllDataPoints(testDataPoint.carId);
+        ArrayList<DataPoint> models = dataPointDatabaseHelper.getAllDataPoints(testDataPoint.carId);
         assertEquals(1, models.size());
     }
 

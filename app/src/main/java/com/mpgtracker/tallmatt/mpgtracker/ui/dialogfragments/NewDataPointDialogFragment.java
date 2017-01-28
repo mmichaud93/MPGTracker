@@ -14,11 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mpgtracker.tallmatt.mpgtracker.R;
-import com.mpgtracker.tallmatt.mpgtracker.models.DataPointModel;
+import com.mpgtracker.tallmatt.mpgtracker.models.DataPoint;
 import com.mpgtracker.tallmatt.mpgtracker.utils.Utils;
-
-import java.util.Calendar;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,9 +82,8 @@ public class NewDataPointDialogFragment extends DialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (gallonsEdit.getText().toString().isEmpty() ||
-                        milesEdit.getText().toString().isEmpty() ||
-                        moneyEdit.getText().toString().isEmpty()) {
+
+                if (!checkValidData()) {
 
                     requiredText.setVisibility(View.VISIBLE);
                     return;
@@ -95,7 +91,7 @@ public class NewDataPointDialogFragment extends DialogFragment {
 
                 if (dialogListener != null) {
                     Bundle args = new Bundle();
-                    args.putSerializable(KEY_NEW_DATA_POINT, new DataPointModel(
+                    args.putSerializable(KEY_NEW_DATA_POINT, new DataPoint(
                             Float.parseFloat(gallonsEdit.getText().toString()),
                             Float.parseFloat(milesEdit.getText().toString()),
                             Float.parseFloat(moneyEdit.getText().toString()),
@@ -107,5 +103,13 @@ public class NewDataPointDialogFragment extends DialogFragment {
                 NewDataPointDialogFragment.this.dismiss();
             }
         });
+    }
+
+    private boolean checkValidData() {
+
+        return !(gallonsEdit.getText().toString().isEmpty() ||
+                milesEdit.getText().toString().isEmpty() ||
+                moneyEdit.getText().toString().isEmpty()) && !(Float.parseFloat(gallonsEdit.getText().toString()) == 0 || Float.parseFloat(milesEdit.getText().toString()) == 0);
+
     }
 }

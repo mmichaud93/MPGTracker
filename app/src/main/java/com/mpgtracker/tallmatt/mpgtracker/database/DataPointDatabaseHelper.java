@@ -7,8 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.mpgtracker.tallmatt.mpgtracker.models.DataPointModel;
-import com.mpgtracker.tallmatt.mpgtracker.utils.Utils;
+import com.mpgtracker.tallmatt.mpgtracker.models.DataPoint;
 
 import java.util.ArrayList;
 
@@ -61,7 +60,7 @@ public class DataPointDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertDataPoint(DataPointModel dataPoint) {
+    public long insertDataPoint(DataPoint dataPoint) {
 
         if (dataPoint == null) {
             return -1;
@@ -78,7 +77,7 @@ public class DataPointDatabaseHelper extends SQLiteOpenHelper {
         return i;
     }
 
-    public boolean updateDataPoint(DataPointModel dataPoint) {
+    public boolean updateDataPoint(DataPoint dataPoint) {
         if (dataPoint == null) {
             return false;
         }
@@ -92,7 +91,7 @@ public class DataPointDatabaseHelper extends SQLiteOpenHelper {
         return r > 0;
     }
 
-    public boolean deleteDataPoint(DataPointModel dataPoint) {
+    public boolean deleteDataPoint(DataPoint dataPoint) {
 
         if (dataPoint == null) {
             return false;
@@ -114,16 +113,16 @@ public class DataPointDatabaseHelper extends SQLiteOpenHelper {
         return (int) DatabaseUtils.queryNumEntries(db, DPDB_TABLE_NAME);
     }
 
-    public ArrayList<DataPointModel> getAllDataPoints(long carId) {
+    public ArrayList<DataPoint> getAllDataPoints(long carId) {
 
-        ArrayList<DataPointModel> dataPoints = new ArrayList<>();
+        ArrayList<DataPoint> dataPoints = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + DPDB_TABLE_NAME + " where " + DPDB_COLUMN_CAR_ID + " = " + Long.toString(carId), null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            dataPoints.add(new DataPointModel(
+            dataPoints.add(new DataPoint(
                     cursor.getLong(cursor.getColumnIndex(DPDB_COLUMN_ID)),
                     cursor.getLong(cursor.getColumnIndex(DPDB_COLUMN_CAR_ID)),
                     cursor.getFloat(cursor.getColumnIndex(DPDB_COLUMN_GALLONS)),
@@ -141,7 +140,7 @@ public class DataPointDatabaseHelper extends SQLiteOpenHelper {
         return dataPoints;
     }
 
-    private ContentValues getContentValuesFromDataPointModel(DataPointModel dataPoint) {
+    private ContentValues getContentValuesFromDataPointModel(DataPoint dataPoint) {
 
         if (dataPoint == null) {
             return null;

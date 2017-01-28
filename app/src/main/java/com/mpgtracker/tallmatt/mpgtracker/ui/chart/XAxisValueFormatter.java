@@ -17,12 +17,12 @@ public class XAxisValueFormatter implements IAxisValueFormatter {
     private DateFormat dateFormat;
 
     public XAxisValueFormatter() {
-        dateFormat = new SimpleDateFormat("MMM/dd", Locale.US);
+        dateFormat = new SimpleDateFormat("MMM dd", Locale.US);
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        
+
         Date date = new Date();
         date.setTime((long) value);
         return dateFormat.format(date);

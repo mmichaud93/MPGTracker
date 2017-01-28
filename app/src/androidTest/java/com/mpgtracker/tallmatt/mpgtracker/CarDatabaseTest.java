@@ -4,7 +4,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.mpgtracker.tallmatt.mpgtracker.database.CarDatabaseHelper;
-import com.mpgtracker.tallmatt.mpgtracker.models.CarModel;
+import com.mpgtracker.tallmatt.mpgtracker.models.Car;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -24,14 +24,14 @@ public class CarDatabaseTest {
     private static String testCarYear = "testYear";
     private static String testCarLicense = "testLicense";
     private static String testCarName = "testName";
-    private static CarModel testCar;
+    private static Car testCar;
 
     private String testUpdate = "_update";
 
     @BeforeClass
     public static void setUp() {
         carDatabaseHelper = new CarDatabaseHelper(InstrumentationRegistry.getTargetContext());
-        testCar = new CarModel(-1, testCarMake, testCarModel, testCarYear, testCarLicense, testCarName);
+        testCar = new Car(-1, testCarMake, testCarModel, testCarYear, testCarLicense, testCarName);
     }
 
     @After
@@ -61,7 +61,7 @@ public class CarDatabaseTest {
 
         assertTrue(carDatabaseHelper.updateCar(testCar));
 
-        CarModel[] models = carDatabaseHelper.getAllCars();
+        Car[] models = carDatabaseHelper.getAllCars();
 
         assertEquals(testCarMake + testUpdate, models[0].getMake());
         assertEquals(testCarModel + testUpdate, models[0].getModel());
@@ -75,7 +75,7 @@ public class CarDatabaseTest {
 
         carDatabaseHelper.insertCar(testCar);
 
-        CarModel[] models = carDatabaseHelper.getAllCars();
+        Car[] models = carDatabaseHelper.getAllCars();
         assertEquals(1, models.length);
     }
 

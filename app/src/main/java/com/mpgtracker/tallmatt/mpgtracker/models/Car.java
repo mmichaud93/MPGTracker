@@ -2,15 +2,13 @@ package com.mpgtracker.tallmatt.mpgtracker.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by TallMatt on 1/24/2017.
  */
 
-public class CarModel implements Serializable {
+public class Car implements Serializable {
 
     long id;
 
@@ -19,9 +17,9 @@ public class CarModel implements Serializable {
     String year;
     String license;
     String name;
-    List<DataPointModel> dataPoints;
+    List<DataPoint> dataPoints;
 
-    public CarModel(long id, String make, String model, String year, String license, String name) {
+    public Car(long id, String make, String model, String year, String license, String name) {
         this.id = id;
         this.make = make;
         this.model = model;
@@ -31,10 +29,10 @@ public class CarModel implements Serializable {
         dataPoints = new ArrayList<>();
     }
 
-    public void addDataPoint(DataPointModel dataPointModel) {
+    public void addDataPoint(DataPoint dataPoint) {
 
-        dataPointModel.carId = getId();
-        dataPoints.add(dataPointModel);
+        dataPoint.carId = getId();
+        dataPoints.add(dataPoint);
     }
 
     public String getMake() {
@@ -77,12 +75,14 @@ public class CarModel implements Serializable {
         this.name = name;
     }
 
-    public List<DataPointModel> getDataPoints() {
+    public List<DataPoint> getDataPoints() {
         return dataPoints;
     }
 
-    public void setDataPoints(List<DataPointModel> dataPoints) {
-        this.dataPoints = dataPoints;
+    public void setDataPoints(List<DataPoint> dataPoints) {
+        for (DataPoint dataPoint : dataPoints) {
+            addDataPoint(dataPoint);
+        }
     }
 
     public long getId() {
