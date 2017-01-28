@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        style="@style/TextView_Dialog_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a car" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark" />
+
+    <!--
+
+    MAKE
+
+    -->
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_car_make"
+            android:padding="8dp"
+            android:text="Make" />
+
+        <EditText
+            android:id="@+id/new_car_make"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/optional"
+            android:inputType="text" />
+    </LinearLayout>
+
+
+    <!--
+
+    MODEL
+
+    -->
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_car_model"
+            android:padding="8dp"
+            android:text="Model" />
+
+        <EditText
+            android:id="@+id/new_car_model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/optional"
+            android:inputType="text" />
+    </LinearLayout>
+
+
+    <!--
+
+    YEAR
+
+    -->
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_car_year"
+            android:padding="8dp"
+            android:text="Year" />
+
+        <EditText
+            android:id="@+id/new_car_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/optional"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <!--
+
+    LICENSE
+
+    -->
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_car_license"
+            android:padding="8dp"
+            android:text="License" />
+
+        <EditText
+            android:id="@+id/new_car_license"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/optional"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <!--
+
+    NAME
+
+    -->
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_car_name"
+            android:padding="8dp"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/new_car_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/new_car_required"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Name is required"
+        android:textColor="#cc2222"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/new_car_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorPrimary"
+            android:text="Cancel"
+            android:textColor="@color/textColorLight" />
+
+        <Button
+            android:id="@+id/new_car_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@color/colorPrimary"
+            android:text="Save"
+            android:textColor="@color/textColorLight" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        style="@style/TextView_Dialog_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a new data point" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark" />
+
+    <!--
+
+    GALLONS
+
+    -->
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_dp_gallons"
+            android:padding="8dp"
+            android:text="Number of gallons put in" />
+
+        <EditText
+            android:id="@+id/new_dp_gallons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+
+    <!--
+
+    MILES
+
+    -->
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_dp_miles"
+            android:padding="8dp"
+            android:text="Number of miles driven" />
+
+        <EditText
+            android:id="@+id/new_dp_miles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+
+    <!--
+
+    MONEY
+
+    -->
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_Dialog_Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/new_dp_money"
+            android:padding="8dp"
+            android:text="Money spent" />
+
+        <EditText
+            android:id="@+id/new_dp_money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <!--
+
+    DATE
+
+    -->
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <DatePicker
+            android:id="@+id/new_dp_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+    </LinearLayout>
+
+    <!--
+
+    LOCATION
+
+    -->
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/new_dp_use_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use Location?" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/new_dp_required"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="All fields are required"
+        android:textColor="#cc2222"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/new_dp_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorPrimary"
+            android:text="Cancel"
+            android:textColor="@color/textColorLight" />
+
+        <Button
+            android:id="@+id/new_dp_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@color/colorPrimary"
+            android:text="Save"
+            android:textColor="@color/textColorLight" />
+    </LinearLayout>
+</LinearLayout>
