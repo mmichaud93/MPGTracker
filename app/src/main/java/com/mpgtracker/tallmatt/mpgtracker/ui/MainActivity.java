@@ -111,11 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
         // load the data points
         currentActiveCar.setDataPoints(dataPointDatabaseHelper.getAllDataPoints(currentActiveCar.getId()));
-        if (currentActiveCar.getDataPoints().size() > 0) {
-            // fill out the texts views
-            fillOutDashboard();
-            fillOutChart();
-        }
+        fillOutDashboard();
+        fillOutChart();
 
         addDataPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         currentActiveCar.addDataPoint(dataPoint);
                         dataPointDatabaseHelper.insertDataPoint(dataPoint);
 
+                        fillOutDashboard();
                         fillOutChart();
                     }
                 });
@@ -175,10 +173,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillOutDashboard() {
+
+        if (currentActiveCar.getDataPoints().size() > 0) {
+            carDataLayout.setVisibility(View.VISIBLE);
+        } else {
+            carDataLayout.setVisibility(View.GONE);
+        }
+
         mpgOverallText.setText(getResources().getString(R.string.avergae_mpg_text, decimalFormat.format(DataUtils.getAverageMPG(currentActiveCar.getDataPoints()))));
     }
 
     private void fillOutChart() {
+
+        if (currentActiveCar.getDataPoints().size() > 0) {
+            dataChart.setVisibility(View.VISIBLE);
+        } else {
+            dataChart.setVisibility(View.GONE);
+        }
 
         List<Entry> entries = new ArrayList<>();
 
