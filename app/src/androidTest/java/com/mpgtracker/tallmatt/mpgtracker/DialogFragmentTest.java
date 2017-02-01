@@ -80,7 +80,7 @@ public class DialogFragmentTest {
     public void test_dataPointDialogFragment() throws Exception {
 
         FragmentManager fm = activityTestRule.getActivity().getSupportFragmentManager();
-        NewDataPointDialogFragment dataPointDialogFragment = NewDataPointDialogFragment.newInstance(new DialogListener() {
+        NewDataPointDialogFragment dataPointDialogFragment = NewDataPointDialogFragment.newInstance(null, new DialogListener() {
             @Override
             public void onDialogClose(Bundle args) {
                 DataPoint dataPoint = (DataPoint) args.get(NewDataPointDialogFragment.KEY_NEW_DATA_POINT);

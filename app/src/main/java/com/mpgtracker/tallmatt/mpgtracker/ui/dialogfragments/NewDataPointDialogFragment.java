@@ -17,6 +17,8 @@ import com.mpgtracker.tallmatt.mpgtracker.R;
 import com.mpgtracker.tallmatt.mpgtracker.models.DataPoint;
 import com.mpgtracker.tallmatt.mpgtracker.utils.Utils;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,6 +27,7 @@ public class NewDataPointDialogFragment extends DialogFragment {
     public static final String KEY_NEW_DATA_POINT = "key_data_point";
 
     private DialogListener dialogListener;
+    private DataPoint currentDataPoint;
 
     @BindView(R.id.new_dp_gallons)
     EditText gallonsEdit;
@@ -40,12 +43,15 @@ public class NewDataPointDialogFragment extends DialogFragment {
     TextView requiredText;
     @BindView(R.id.new_dp_cancel)
     Button cancelButton;
+    @BindView(R.id.new_dp_delete)
+    Button deleteButton;
     @BindView(R.id.new_dp_save)
     Button saveButton;
 
-    public static NewDataPointDialogFragment newInstance(DialogListener dialogListener) {
+    public static NewDataPointDialogFragment newInstance(DataPoint currentDataPoint, DialogListener dialogListener) {
         NewDataPointDialogFragment newFragment = new NewDataPointDialogFragment(dialogListener);
         Bundle args = new Bundle();
+        args.putSerializable(KEY_NEW_DATA_POINT, currentDataPoint);
         newFragment.setArguments(args);
         return newFragment;
     }
@@ -65,6 +71,8 @@ public class NewDataPointDialogFragment extends DialogFragment {
         View root = inflater.inflate(R.layout.dialog_new_data_point, container);
         ButterKnife.bind(this, root);
 
+        currentDataPoint = (DataPoint) getArguments().getSerializable(KEY_NEW_DATA_POINT);
+
         return root;
     }
 
@@ -79,6 +87,17 @@ public class NewDataPointDialogFragment extends DialogFragment {
             }
         });
 
+        if (currentDataPoint != null) {
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogListener.onDialogClose(null);
+                    NewDataPointDialogFragment.this.dismiss();
+                }
+            });
+            deleteButton.setVisibility(View.VISIBLE);
+        }
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,18 +110,33 @@ public class NewDataPointDialogFragment extends DialogFragment {
 
                 if (dialogListener != null) {
                     Bundle args = new Bundle();
-                    args.putSerializable(KEY_NEW_DATA_POINT, new DataPoint(
-                            Float.parseFloat(gallonsEdit.getText().toString()),
-                            Float.parseFloat(milesEdit.getText().toString()),
-                            Float.parseFloat(moneyEdit.getText().toString()),
-                            Utils.dateFromDatePicker(datePicker),
-                            null));
+
+                    if (currentDataPoint != null) {
+                        args.putSerializable(KEY_NEW_DATA_POINT, currentDataPoint);
+                    } else {
+                        args.putSerializable(KEY_NEW_DATA_POINT, new DataPoint(
+                                Float.parseFloat(gallonsEdit.getText().toString()),
+                                Float.parseFloat(milesEdit.getText().toString()),
+                                Float.parseFloat(moneyEdit.getText().toString()),
+                                Utils.dateFromDatePicker(datePicker),
+                                null));
+                    }
+
                     dialogListener.onDialogClose(args);
                 }
 
                 NewDataPointDialogFragment.this.dismiss();
             }
         });
+
+        if (currentDataPoint != null) {
+            gallonsEdit.setText(Float.toString(currentDataPoint.gallonsPutIn));
+            milesEdit.setText(Float.toString(currentDataPoint.milesTravelled));
+            moneyEdit.setText(Float.toString(currentDataPoint.moneySpent));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(currentDataPoint.dateAdded);
+            datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        }
     }
 
     private boolean checkValidData() {

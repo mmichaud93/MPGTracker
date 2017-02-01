@@ -35,6 +35,26 @@ public class Car implements Serializable {
         dataPoints.add(dataPoint);
     }
 
+    public void updateDataPoint(DataPoint dataPoint) {
+        for (int i = 0; i < dataPoints.size(); i++) {
+            if (getDataPoints().get(i).id == dataPoint.id) {
+                getDataPoints().set(i, dataPoint);
+                return;
+            }
+        }
+    }
+
+    public void deleteDataPoint(DataPoint dataPoint) {
+        int r = 0;
+        for (int i = 0; i < dataPoints.size(); i++) {
+            if (getDataPoints().get(i).id == dataPoint.id) {
+                r = i;
+                break;
+            }
+        }
+        getDataPoints().remove(r);
+    }
+
     public String getMake() {
         return make;
     }

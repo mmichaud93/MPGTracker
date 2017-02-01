@@ -1,4 +1,36 @@
 <resources>
     <string name="app_name">MPG Tracker</string>
     <string name="optional">Optional</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+
+    <!-- new data point dialog -->
+    <string name="money_spent">Money spent</string>
+    <string name="use_location">Use Location?</string>
+    <string name="all_fields_are_required_and_need_to_be_greater_than_0">All fields are required and need to be greater than 0</string>
+    <string name="number_of_miles_driven">Number of miles driven</string>
+    <string name="number_of_gallons_put_in">Number of gallons put in</string>
+    <string name="add_a_new_data_point">Add a new data point</string>
+
+    <!-- new car dialog -->
+    <string name="name_is_required">Name is required</string>
+    <string name="name">Name</string>
+    <string name="license">License</string>
+    <string name="year">Year</string>
+    <string name="model">Model</string>
+    <string name="make">Make</string>
+    <string name="add_a_car">Add a car</string>
+
+    <!-- MainActivity -->
+    <string name="mpg">MPG</string>
+    <string name="avergae_mpg_text">You average %s1 miles per gallon</string>
+    <string name="edit_car">Edit Car</string>
+
+    <!-- EditActivity -->
+    <string name="edit_gallons">Gallons: %s1</string>
+    <string name="edit_miles">Miles: %s1</string>
+    <string name="edit_dollars">Dollars: %s1</string>
+    <string name="edit_date">Date: %s1</string>
+
 </resources>

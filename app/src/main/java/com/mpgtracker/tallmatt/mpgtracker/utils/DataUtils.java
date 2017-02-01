@@ -3,6 +3,7 @@ package com.mpgtracker.tallmatt.mpgtracker.utils;
 import com.mpgtracker.tallmatt.mpgtracker.models.Car;
 import com.mpgtracker.tallmatt.mpgtracker.models.DataPoint;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,13 +35,13 @@ public class DataUtils {
         if (dataPoints.size() == 0 || minTimeBound > maxTimeBound) return 0;
 
         float sumMPG = 0;
-        for(DataPoint dataPoint : dataPoints) {
+        for (DataPoint dataPoint : dataPoints) {
             if (dataPoint.dateAdded >= minTimeBound && dataPoint.dateAdded <= maxTimeBound) {
                 sumMPG += (dataPoint.milesTravelled / dataPoint.gallonsPutIn);
             }
         }
 
-        return  sumMPG/dataPoints.size();
+        return sumMPG / dataPoints.size();
     }
 
     public static Car generateRandomCar() {
@@ -57,16 +58,16 @@ public class DataUtils {
 
         ArrayList<DataPoint> dataPoints = new ArrayList<>();
 
-        for (int i = 0; i < 8 + (int)(random.nextFloat() * 2); i++) {
+        for (int i = 0; i < 8 + (int) (random.nextFloat() * 2); i++) {
             dataPoints.add(new DataPoint(
-                    randomRange(10f, 12f),
-                    randomRange(350f, 400f),
-                    randomRange(2.12f, 2.49f),
+                    round(randomRange(10f, 12f), 2),
+                    round(randomRange(350f, 400f), 1),
+                    round(randomRange(2.32f, 2.42f), 1),
                     date.getTime(),
                     null
             ));
 
-            date.setTime(date.getTime() + randomRange((long)(86164000 * 12), ((long)86164000 * 16)));
+            date.setTime(date.getTime() + randomRange((long) (86164000 * 12), ((long) 86164000 * 16)));
         }
 
         return dataPoints;
@@ -81,6 +82,12 @@ public class DataUtils {
     public static long randomRange(long minInclusive, long maxInclusive) {
         Random random = new Random();
 
-        return minInclusive + ((long)(random.nextFloat() * (maxInclusive - minInclusive)));
+        return minInclusive + ((long) (random.nextFloat() * (maxInclusive - minInclusive)));
+    }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 }

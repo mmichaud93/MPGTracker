@@ -10,7 +10,7 @@
         style="@style/TextView_Dialog_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add a new data point" />
+        android:text="@string/add_a_new_data_point" />
 
     <View
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@+id/new_dp_gallons"
             android:padding="8dp"
-            android:text="Number of gallons put in" />
+            android:text="@string/number_of_gallons_put_in" />
 
         <EditText
             android:id="@+id/new_dp_gallons"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@+id/new_dp_miles"
             android:padding="8dp"
-            android:text="Number of miles driven" />
+            android:text="@string/number_of_miles_driven" />
 
         <EditText
             android:id="@+id/new_dp_miles"
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@+id/new_dp_money"
             android:padding="8dp"
-            android:text="Money spent" />
+            android:text="@string/money_spent" />
 
         <EditText
             android:id="@+id/new_dp_money"
@@ -129,16 +129,14 @@
             android:id="@+id/new_dp_use_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Use Location?" />
+            android:text="@string/use_location" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/new_dp_required"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:text="All fields are required and need to be greater than 0"
+        android:text="@string/all_fields_are_required_and_need_to_be_greater_than_0"
         android:textColor="#cc2222"
         android:visibility="invisible" />
 
@@ -156,7 +154,16 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@color/colorPrimary"
-            android:text="Cancel"
+            android:text="@string/cancel"
+            android:textColor="@color/textColorLight" />
+
+        <Button
+            android:id="@+id/new_dp_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"
+            android:text="@string/delete"
             android:textColor="@color/textColorLight" />
 
         <Button
@@ -165,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:background="@color/colorPrimary"
-            android:text="Save"
+            android:text="@string/save"
             android:textColor="@color/textColorLight" />
     </LinearLayout>
 </LinearLayout>

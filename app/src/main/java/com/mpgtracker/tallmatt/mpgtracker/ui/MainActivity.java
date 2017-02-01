@@ -1,9 +1,13 @@
 package com.mpgtracker.tallmatt.mpgtracker.ui;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         carDatabaseHelper = new CarDatabaseHelper(this);
         dataPointDatabaseHelper = new DataPointDatabaseHelper(this);
 
-        if (BuildConfig.DEBUG) {
+        if (true && BuildConfig.DEBUG) {
             carDatabaseHelper.resetTable();
             dataPointDatabaseHelper.resetTable();
 
@@ -118,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // launch the dialog to input a new data point
                 FragmentManager fm = getSupportFragmentManager();
-                NewDataPointDialogFragment newDataPointDialogFragment = NewDataPointDialogFragment.newInstance(new DialogListener() {
+                NewDataPointDialogFragment newDataPointDialogFragment = NewDataPointDialogFragment.newInstance(null, new DialogListener() {
                     @Override
                     public void onDialogClose(Bundle args) {
 
@@ -136,11 +140,42 @@ public class MainActivity extends AppCompatActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(currentActiveCar.getName());
+            getSupportActionBar().setSubtitle(currentActiveCar.getYear() + " " + currentActiveCar.getMake() + " " +currentActiveCar.getModel());
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.main_menu_edit_car:
+                Intent intent = new Intent(this, CarEditActivity.class);
+                intent.putExtra(CarEditActivity.KEY_CURRENT_ACTIVE_CAR, currentActiveCar);
+                startActivityForResult(intent, CarEditActivity.REQUEST, null);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == CarEditActivity.REQUEST && resultCode == CarEditActivity.RESULT_SAVE)    {
+            currentActiveCar = (Car) data.getSerializableExtra(CarEditActivity.KEY_CURRENT_ACTIVE_CAR);
+            carDatabaseHelper.insertCar(currentActiveCar);
+            initWithLoadedCar();
         }
     }
 
     private void fillOutDashboard() {
-        mpgOverallText.setText("You average "+decimalFormat.format(DataUtils.getAverageMPG(currentActiveCar.getDataPoints())) + " miles per gallon");
+        mpgOverallText.setText(getResources().getString(R.string.avergae_mpg_text, decimalFormat.format(DataUtils.getAverageMPG(currentActiveCar.getDataPoints()))));
     }
 
     private void fillOutChart() {
@@ -153,17 +188,18 @@ public class MainActivity extends AppCompatActivity {
         }
         Collections.sort(entries, new EntryXComparator());
 
-        LineDataSet dataSet = new LineDataSet(entries, "MPG");
-        dataSet.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        LineDataSet dataSet = new LineDataSet(entries, getString(R.string.mpg));
+        dataSet.setColor(ContextCompat.getColor(this, R.color.colorAccent));
         dataSet.setLineWidth(2);
-        dataSet.setCircleColor(ContextCompat.getColor(this, R.color.colorAccent));
-        dataSet.setCircleColorHole(ContextCompat.getColor(this, R.color.colorAccent));
+        dataSet.setCircleColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        dataSet.setCircleColorHole(ContextCompat.getColor(this, R.color.colorPrimary));
         dataSet.setCircleRadius(2);
+        dataSet.setValueTextSize(16);
 
         LineData lineData = new LineData(dataSet);
         dataChart.setData(lineData);
         dataChart.invalidate();
-
+        dataChart.setDescription(null);
         dataChart.getXAxis().setValueFormatter(new XAxisValueFormatter());
     }
 }
