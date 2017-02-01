@@ -39,7 +39,8 @@
             android:id="@+id/new_dp_gallons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            />
     </LinearLayout>
 
 

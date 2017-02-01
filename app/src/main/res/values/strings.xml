@@ -26,14 +26,14 @@
 
     <!-- MainActivity -->
     <string name="mpg">MPG</string>
-    <string name="avergae_mpg_text">You average %s1 miles per gallon</string>
+    <string name="avergae_mpg_text">You average %s miles per gallon</string>
     <string name="edit_car">Edit Car</string>
 
     <!-- EditActivity -->
-    <string name="edit_gallons">Gallons: %s1</string>
-    <string name="edit_miles">Miles: %s1</string>
-    <string name="edit_dollars">Dollars: %s1</string>
-    <string name="edit_date">Date: %s1</string>
+    <string name="edit_gallons">Gallons: %s</string>
+    <string name="edit_miles">Miles: %s</string>
+    <string name="edit_dollars">Dollars: %s</string>
+    <string name="edit_date">Date: %s</string>
     <string name="save_changes">Save changes?</string>
 
 </resources>

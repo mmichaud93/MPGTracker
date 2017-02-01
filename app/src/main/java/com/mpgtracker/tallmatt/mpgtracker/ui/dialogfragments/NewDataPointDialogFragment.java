@@ -112,6 +112,10 @@ public class NewDataPointDialogFragment extends DialogFragment {
                     Bundle args = new Bundle();
 
                     if (currentDataPoint != null) {
+                        currentDataPoint.gallonsPutIn = Float.parseFloat(gallonsEdit.getText().toString());
+                        currentDataPoint.milesTravelled = Float.parseFloat(milesEdit.getText().toString());
+                        currentDataPoint.moneySpent = Float.parseFloat(moneyEdit.getText().toString());
+                        currentDataPoint.dateAdded = Utils.dateFromDatePicker(datePicker);
                         args.putSerializable(KEY_NEW_DATA_POINT, currentDataPoint);
                     } else {
                         args.putSerializable(KEY_NEW_DATA_POINT, new DataPoint(
@@ -132,7 +136,7 @@ public class NewDataPointDialogFragment extends DialogFragment {
         if (currentDataPoint != null) {
             gallonsEdit.setText(Float.toString(currentDataPoint.gallonsPutIn));
             milesEdit.setText(Float.toString(currentDataPoint.milesTravelled));
-            moneyEdit.setText(Float.toString(currentDataPoint.moneySpent));
+            moneyEdit.setText(String.format("%f",currentDataPoint.moneySpent));
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(currentDataPoint.dateAdded);
             datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));

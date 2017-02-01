@@ -2,6 +2,7 @@ package com.mpgtracker.tallmatt.mpgtracker.ui;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        init();
+    }
+
+    private void init() {
+
         if (carDatabaseHelper.getNumberOfRows() == 0) {
             // no cars saved, prompt user to add one
             FragmentManager fm = getSupportFragmentManager();
@@ -99,7 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     initWithLoadedCar();
                 }
             });
-            newCarDialogFragment.show(fm, "dialog_new_car");
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(newCarDialogFragment, "dialog_new_car");
+            fragmentTransaction.commitAllowingStateLoss();
+            //newCarDialogFragment.show(fm, "dialog_new_car");
         } else {
             currentActiveCar = carDatabaseHelper.getAllCars()[0];
 
@@ -118,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // launch the dialog to input a new data point
-                FragmentManager fm = getSupportFragmentManager();
+                //FragmentManager fm = getSupportFragmentManager();
                 NewDataPointDialogFragment newDataPointDialogFragment = NewDataPointDialogFragment.newInstance(null, new DialogListener() {
                     @Override
                     public void onDialogClose(Bundle args) {
@@ -132,13 +141,15 @@ public class MainActivity extends AppCompatActivity {
                         fillOutChart();
                     }
                 });
-                newDataPointDialogFragment.show(fm, "dialog_new_data_point");
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(newDataPointDialogFragment, "dialog_new_data_point");
+               // newDataPointDialogFragment.show(fm, "dialog_new_data_point");
             }
         });
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(currentActiveCar.getName());
-            getSupportActionBar().setSubtitle(currentActiveCar.getYear() + " " + currentActiveCar.getMake() + " " +currentActiveCar.getModel());
+            getSupportActionBar().setSubtitle(currentActiveCar.getYear() + " " + currentActiveCar.getMake() + " " + currentActiveCar.getModel());
         }
     }
 
@@ -165,10 +176,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CarEditActivity.REQUEST && resultCode == CarEditActivity.RESULT_SAVE)    {
-            currentActiveCar = (Car) data.getSerializableExtra(CarEditActivity.KEY_CURRENT_ACTIVE_CAR);
-            carDatabaseHelper.insertCar(currentActiveCar);
-            initWithLoadedCar();
+        if (requestCode == CarEditActivity.REQUEST) {
+            if (resultCode == CarEditActivity.RESULT_SAVE) {
+                currentActiveCar = (Car) data.getSerializableExtra(CarEditActivity.KEY_CURRENT_ACTIVE_CAR);
+                carDatabaseHelper.insertCar(currentActiveCar);
+                initWithLoadedCar();
+            } else if (resultCode == CarEditActivity.RESULT_DELETE) {
+                carDatabaseHelper.deleteCar(currentActiveCar);
+                currentActiveCar = null;
+
+                dataChart.setVisibility(View.GONE);
+                carDataLayout.setVisibility(View.GONE);
+
+                init();
+            }
         }
     }
 
@@ -195,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (DataPoint data : currentActiveCar.getDataPoints()) {
 
-            entries.add(new Entry(data.dateAdded, data.milesTravelled/data.gallonsPutIn));
+            entries.add(new Entry(data.dateAdded, data.milesTravelled / data.gallonsPutIn));
         }
         Collections.sort(entries, new EntryXComparator());
 

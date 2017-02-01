@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -43,11 +44,13 @@ public class CarEditActivity extends AppCompatActivity {
     public static final int REQUEST = 1000;
     public static final int RESULT_SAVE = 1001;
     public static final int RESULT_DISCARD = 1002;
+    public static final int RESULT_DELETE = 1003;
 
     private Car currentActiveCar;
     private Car carDuplicate;
     private DataPointDatabaseHelper dataPointDatabaseHelper;
     private ArrayList<DataPoint> deletedPoints = new ArrayList<>();
+    private ArrayList<DataPoint> updatedPoints = new ArrayList<>();
     private boolean dirty = false;
 
     LinearLayout header;
@@ -57,6 +60,8 @@ public class CarEditActivity extends AppCompatActivity {
     EditText yearEdit;
     EditText licenseEdit;
     EditText nameEdit;
+    LinearLayout footer;
+    Button deleteButton;
 
     @BindView(R.id.edit_data_points)
     ListView dataPointsList;
@@ -86,6 +91,8 @@ public class CarEditActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         header = (LinearLayout) layoutInflater.inflate(R.layout.adapter_edit_header, null, false);
         dataPointsList.addHeaderView(header);
+        footer = (LinearLayout) layoutInflater.inflate(R.layout.adapter_edit_footer, null, false);
+        dataPointsList.addFooterView(footer);
 
         makeEdit = (EditText) header.findViewById(R.id.edit_car_make);
         makeEdit.setText(currentActiveCar.getMake());
@@ -100,6 +107,21 @@ public class CarEditActivity extends AppCompatActivity {
 
         requiredText = (TextView) header.findViewById(R.id.edit_car_required);
 
+        deleteButton = (Button) footer.findViewById(R.id.edit_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                areYouSure("Delete car? This can't be undone.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        setResult(RESULT_DELETE);
+                        finish();
+                    }
+                });
+            }
+        });
+
         editDataPointAdapter = new EditDataPointAdapter(this, currentActiveCar.getDataPoints());
         dataPointsList.setAdapter(editDataPointAdapter);
         dataPointsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -113,13 +135,17 @@ public class CarEditActivity extends AppCompatActivity {
 
                         if (args != null) {
 
-                            DataPoint dataPoint = (DataPoint) args.get(NewDataPointDialogFragment.KEY_NEW_DATA_POINT);
+                            DataPoint updatedDataPoint = (DataPoint) args.get(NewDataPointDialogFragment.KEY_NEW_DATA_POINT);
 
-                            currentActiveCar.updateDataPoint(dataPoint);
-                            dataPointDatabaseHelper.updateDataPoint(dataPoint);
+                            updatedPoints.add(updatedDataPoint);
+                            currentActiveCar.updateDataPoint(updatedDataPoint);
+
+                            editDataPointAdapter.notifyDataSetChanged();
                         } else {
 
                             DataPoint removedDataPoint = currentActiveCar.getDataPoints().get(fixedPosition);
+                            // if the point is in the updated list then remove it
+                            updatedPoints.remove(removedDataPoint);
                             deletedPoints.add(removedDataPoint);
                             currentActiveCar.deleteDataPoint(removedDataPoint);
 
@@ -163,7 +189,7 @@ public class CarEditActivity extends AppCompatActivity {
                 // check is dirty
                 if (!Car.haveEqualValues(currentActiveCar, carDuplicate)) {
 
-                    areYouSure(new DialogInterface.OnClickListener() {
+                    areYouSure(getString(R.string.save_changes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -171,6 +197,10 @@ public class CarEditActivity extends AppCompatActivity {
 
                             for (DataPoint dataPoint : deletedPoints) {
                                 dataPointDatabaseHelper.deleteDataPoint(dataPoint);
+                            }
+
+                            for (DataPoint dataPoint : updatedPoints) {
+                                dataPointDatabaseHelper.updateDataPoint(dataPoint);
                             }
 
                             Intent data = new Intent();
@@ -189,10 +219,10 @@ public class CarEditActivity extends AppCompatActivity {
         }
     }
 
-    private void areYouSure(DialogInterface.OnClickListener positiveListener) {
+    private void areYouSure(String title, DialogInterface.OnClickListener positiveListener) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.save_changes);
+        builder.setTitle(title);
         builder.setPositiveButton(getString(R.string.yes), positiveListener);
         builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
